@@ -1,0 +1,31 @@
+services:
+  client:
+    container_name: client
+    build: client/.
+    ports:
+      - 80:3000
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+    links:
+      - server
+  server:
+    container_name: server
+    build: server/.
+    ports:
+      - 7156:80
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+    volumes:
+      - database:/tmp/
+    environment:
+      - secret_key=$SECRET_KEY
+      - connection_string=$CONNECTION_STRING
+volumes:
+  database:
+    external: true
