@@ -19,8 +19,8 @@ namespace Server.Services.EmailService
         {
             var message = new MimeMessage();
 
-            message.From.Add(new MailboxAddress("no-reply", s_user));
-            message.To.Add(new MailboxAddress("new user", email.To));
+            message.From.Add(new MailboxAddress("Control Panel", s_user));
+            message.To.Add(new MailboxAddress(email.To, email.To));
 
             message.Subject = email.Subject;
             message.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -35,18 +35,7 @@ namespace Server.Services.EmailService
 
             smtp.Send(message);
             smtp.Disconnect(true);
-            /*
-            var message = new MimeMessage();
-            message.From.Add(MailboxAddress.Parse(email.From));
-            message.To.Add(MailboxAddress.Parse(email.To));
-            message.Subject = email.Subject;
-            message.Body = new TextPart(TextFormat.Html) { Text = email.Body };
-
-            using var smtp = new SmtpClient();
-            await smtp.ConnectAsync("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
-            await smtp.AuthenticateAsync("alexzander.jakubowski@ethereal.email", "KT1UCAJTbxsfHt2AVZ");
-            await smtp.SendAsync(message);
-            */
+            
             return new(data: true, statusCode: StatusCodes.Status200OK);
         }
     }

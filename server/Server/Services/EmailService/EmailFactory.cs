@@ -16,7 +16,7 @@ namespace Server.Services.EmailService
                 To = user.Email,
                 From = s_user,
                 Subject = "Your account has been registered!",
-                Body = $"<p>You have registered successfully. Click in the link below to complete the registration.</p><br><a href=\"{"http://" + s_client + "/user/verify?token=" + user.VerificationToken!}\">Complete the registration</a>"
+                Body = $"<p>You have been registered successfully. Click in the link below to complete the registration.</p><br><a href=\"{"http://" + s_client + "/user/verify?token=" + user.VerificationToken!}\">Complete the registration</a>"
             };
         }
     }
