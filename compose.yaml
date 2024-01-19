@@ -26,6 +26,10 @@ services:
     environment:
       - secret_key=$SECRET_KEY
       - connection_string=$CONNECTION_STRING
+      - smtp_host=$SMTP_HOST
+      - smtp_user=$SMTP_USER
+      - smtp_password=$SMTP_PASSWORD
+      - client=$CLIENT
 volumes:
   database:
     external: true
