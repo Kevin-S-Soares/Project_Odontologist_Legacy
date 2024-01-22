@@ -40,6 +40,7 @@ export const AuthHandler = (props: IConstructor): ReactNode => {
 
   if (state.authenticated === Authentication.UNAUTHENTICATED) {
     window.location.replace("/user/sign_in");
+    return;
   }
 
   if (state.authenticated === Authentication.AUTHENTICATED) {
@@ -49,6 +50,7 @@ export const AuthHandler = (props: IConstructor): ReactNode => {
 
     if (state.authorized === Authorization.UNAUTHORIZED) {
       window.location.replace("/errors?status=403");
+      return;
     }
 
     if (state.authorized === Authorization.AUTHORIZED) {
