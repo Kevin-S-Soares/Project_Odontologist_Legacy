@@ -1,3 +1,4 @@
+/*
 import React, { FormEvent, useEffect, useState } from "react";
 
 import { Schedule } from "@/app/models/schedule";
@@ -212,3 +213,4 @@ export const AvailableScheduleDay = (props: {
     </div>
   );
 };
+*/

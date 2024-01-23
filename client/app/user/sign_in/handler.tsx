@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FormEvent, ReactNode, useEffect, useState } from "react";
+import React, { FormEvent, ReactNode, useState } from "react";
 import { useHookstate } from "@hookstate/core";
 
 import { IBehavior, State, View } from "./view";
@@ -10,6 +10,7 @@ import { Authentication } from "@/app/models/enums";
 import { signInAPI } from "@/app/api/userAPI";
 import { Response } from "@/app/models/response";
 import { authenticatedStore } from "@/app/store";
+import { useMount } from "react-use";
 
 const signIn: SignIn = new SignIn();
 
@@ -17,9 +18,9 @@ export const Handler = (): ReactNode => {
   const [state, setState] = useState(new State());
   const store = useHookstate(authenticatedStore);
 
-  useEffect(() => {
+  useMount(() => {
     setState({ ...state, authenticated: store.get() });
-  }, []);
+  });
 
   const behavior: IBehavior = {
     changeValue: (event: FormEvent<HTMLInputElement>): void => {

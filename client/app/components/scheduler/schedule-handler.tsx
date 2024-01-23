@@ -1,3 +1,4 @@
+/*
 import React, { FormEvent, ReactNode, useEffect, useState } from "react";
 
 import { IScheduleViewBehavior, ScheduleView } from "./schedule-view";
@@ -290,3 +291,4 @@ const getStartingAndEnding = (
   ).padStart(2, "0")}T${ending}`;
   return [minSchedule, maxSchedule];
 };
+*/

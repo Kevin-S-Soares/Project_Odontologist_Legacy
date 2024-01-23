@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode, FormEvent, useState, useEffect } from "react";
+import React, { ReactNode, FormEvent, useState } from "react";
 
 import { Schedule } from "@/app/models/schedule";
 import { IBehavior, State, View } from "./view";
@@ -10,12 +10,13 @@ import { findAllScheduleAPI } from "@/app/api/scheduleAPI";
 import { Response } from "@/app/models/response";
 import { BreakTime } from "@/app/models/break_time";
 import { addBreakTimeAPI } from "@/app/api/breakTimeAPI";
+import { useMount } from "react-use";
 
 const breakTime: BreakTime = new BreakTime();
 export const Handler = (): ReactNode => {
   const [state, setState] = useState(new State());
 
-  useEffect(() => {
+  useMount(() => {
     const response = new Response<Schedule[]>();
     response.setCallBackFunction((item) => {
       setState({ ...state, fetchResponse: item });
@@ -29,7 +30,7 @@ export const Handler = (): ReactNode => {
       },
       (error) => response.isUnsuccessful(error.message),
     );
-  }, []);
+  });
 
   const behavior: IBehavior = {
     changeValue: (event: FormEvent<HTMLInputElement>): void => {

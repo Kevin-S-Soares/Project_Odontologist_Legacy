@@ -1,3 +1,4 @@
+/*
 import React, { ReactNode } from "react";
 import { CalendarHandler } from "./calendar-handler";
 import { PatientHandler } from "./patient-handler";
@@ -81,3 +82,4 @@ export const View = (props: {
     </section>
   );
 };
+*/

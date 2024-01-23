@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FormEvent, ReactNode, useEffect, useState } from "react";
+import React, { FormEvent, ReactNode, useState } from "react";
 
 import { IBehavior, State, View } from "./view";
 import { Appointment } from "@/app/models/appointment";
@@ -11,6 +11,7 @@ import {
   findByIdAppointmentAPI,
 } from "@/app/api/appointmentAPI";
 import { Response } from "@/app/models/response";
+import { useMount } from "react-use";
 
 const getId = (): number => {
   const expression = "\\?id=(\\d+)";
@@ -21,7 +22,7 @@ const getId = (): number => {
 export const Handler = (): ReactNode => {
   const [state, setState] = useState(new State());
 
-  useEffect(() => {
+  useMount(() => {
     const response = new Response<Appointment>();
     response.setCallBackFunction((item) => {
       setState({ ...state, fetchResponse: item });
@@ -30,7 +31,7 @@ export const Handler = (): ReactNode => {
       (success) => response.isSuccessful(success),
       (error) => response.isUnsuccessful(error.message),
     );
-  }, []);
+  });
 
   const behavior: IBehavior = {
     submitForm: (event: FormEvent<HTMLInputElement>): void => {

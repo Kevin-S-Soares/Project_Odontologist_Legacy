@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode, FormEvent, useState, useEffect } from "react";
+import React, { ReactNode, FormEvent, useState } from "react";
 
 import { Odontologist } from "@/app/models/odontologist";
 import { Response } from "@/app/models/response";
@@ -11,6 +11,7 @@ import {
   editOdontologistAPI,
   findByIdOdontologistAPI,
 } from "@/app/api/odontologistAPI";
+import { useMount } from "react-use";
 
 let validFields = 0b111;
 let odontologist: Odontologist = new Odontologist();
@@ -24,7 +25,7 @@ const getId = (): number => {
 export const Handler = (): ReactNode => {
   const [state, setState] = useState(new State());
 
-  useEffect(() => {
+  useMount(() => {
     const response = new Response<Odontologist>();
     response.setCallBackFunction((item) => {
       setState({ ...state, fetchResponse: item });
@@ -36,7 +37,7 @@ export const Handler = (): ReactNode => {
       },
       (error) => response.isUnsuccessful(error.message),
     );
-  }, []);
+  });
 
   const behavior: IBehavior = {
     changeValue: (event: FormEvent<HTMLInputElement>): void => {

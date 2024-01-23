@@ -1,7 +1,8 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useState } from "react";
 
 import { CookieHandler } from "./utilities/CookieHandler";
 import { Role, Authentication, Authorization } from "./models/enums";
+import { useMount } from "react-use";
 
 class State {
   authenticated: Authentication = Authentication.LOADING;
@@ -16,7 +17,7 @@ interface IConstructor {
 export const AuthHandler = (props: IConstructor): ReactNode => {
   const [state, setState] = useState(new State());
 
-  useEffect(() => {
+  useMount(() => {
     const authenticated = CookieHandler.isAuthenticated()
       ? Authentication.AUTHENTICATED
       : Authentication.UNAUTHENTICATED;
@@ -32,7 +33,7 @@ export const AuthHandler = (props: IConstructor): ReactNode => {
       authenticated: authenticated,
       authorized: authorized,
     });
-  }, []);
+  });
 
   if (state.authenticated === Authentication.LOADING) {
     return <></>;
