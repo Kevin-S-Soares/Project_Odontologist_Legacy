@@ -21,7 +21,7 @@ export const Handler = (): ReactNode => {
   });
 
   useEffect(() => {
-    findAllBreakTimeAPI().then(
+    findAllBreakTimeAPI(getScheduleId()).then(
       (success) => {
         data = success;
         paginationResponse.isSuccessful(createPagination(data, itemsPerPage));
@@ -29,6 +29,12 @@ export const Handler = (): ReactNode => {
       (error) => paginationResponse.isUnsuccessful(error.message),
     );
   }, []);
+
+  const getScheduleId = (): number | undefined => {
+    const expression = "\\?scheduleId=(\\d+)";
+    const match = window.location.search.match(expression);
+    return match === null ? undefined : parseInt(match[1]);
+  };
 
   const behavior: IBehavior = {
     clickNextPage: (): void => {

@@ -1,10 +1,16 @@
 import React, { FormEvent, ReactNode } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 import { Response } from "@/app/models/response";
 import { IPagination } from "@/app/models/interfaces";
 import { Status } from "@/app/models/enums";
 import { Appointment } from "@/app/models/appointment";
+import { CircleButton, Theme } from "@/app/components/theme";
+
+import editIcon from "../../../public/edit.svg";
+import removeIcon from "../../../public/trash2.svg";
+import { setModalCallBack, setModalMessage, showModal } from "@/app/components/modal/funcs";
 
 export const DEFAULT_ITEMS_PER_PAGE = 5;
 
@@ -26,15 +32,17 @@ export const View = (props: {
   return (
     <div>
       <div className="mb-8 flex justify-between">
-        <div>
-          <Link
-            className="rounded-md bg-emerald-500 px-4 py-3 font-semibold text-white transition-all hover:bg-emerald-600"
-            href="./add"
-          >
-            + Add new appointment
-          </Link>
+        <div className="flex">
+          <div className="flex">
+            <Link
+              className="flex w-12 justify-center overflow-hidden whitespace-nowrap rounded-md bg-emerald-500 px-4 py-3 font-bold text-white transition-all hover:w-48 hover:bg-emerald-600 hover:after:content-['_Add_Appointment']"
+              href="./add"
+            >
+              <span>+</span>
+            </Link>
+          </div>
         </div>
-        <div>
+        <div className="flex items-center">
           <label className="mr-2">Items per page:</label>
           <select
             className="rounded-md border-2 border-slate-300 px-2 py-1"
@@ -58,9 +66,7 @@ export const View = (props: {
       {props.state.paginationResponse.status === Status.ERROR &&
       props.state.paginationResponse.errorMessage !== null ? (
         <div>
-          <p className="text-red-500">
-            {props.state.paginationResponse.errorMessage}
-          </p>
+          <p>{props.state.paginationResponse.errorMessage}</p>
         </div>
       ) : (
         <></>
@@ -69,97 +75,156 @@ export const View = (props: {
       props.state.paginationResponse.data !== null ? (
         <div>
           {props.state.paginationResponse.data.page.length <= 0 ? (
-            <div>
-              <p>No appointments available!</p>
-            </div>
+            <p>No appointments available!</p>
           ) : (
             <></>
           )}
           {props.state.paginationResponse.data.page.length > 0 ? (
-            <div>
-              <div className="flex flex-col">
-                <table className="grow">
-                  <thead>
-                    <tr className="border-b-2 border-black">
-                      <th className="w-48">Start</th>
-                      <th className="w-48">End</th>
-                      <th className="w-48">Patient Name</th>
-                      <th className="w-48">Description</th>
-                      <th className="w-96" colSpan={2}>
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {props.state.paginationResponse.data.page.map(
-                      (item, index) => (
-                        <tr
-                          className="border-b-2 border-slate-200 text-center hover:bg-slate-100"
-                          key={index}
-                        >
-                          <td className="h-20 lg:inline">
-                            {new Date(item.start).toLocaleString()}
-                          </td>
-                          <td>{new Date(item.end).toLocaleString()}</td>
-                          <td>{item.patientName}</td>
-                          <td>{item.description}</td>
-                          <td className="w-48">
-                            <Link
-                              className="text-cyan-500 underline hover:text-cyan-600"
-                              href={`/appointment/edit?id=${item.id}`}
-                            >
-                              Edit
-                            </Link>
-                          </td>
-                          <td className="w-48">
-                            <Link
-                              className="text-cyan-500 underline hover:text-cyan-600"
-                              href={`/appointment/remove?id=${item.id}`}
-                            >
-                              Remove
-                            </Link>
-                          </td>
-                        </tr>
-                      ),
-                    )}
-                  </tbody>
-                </table>
-                <div className="mt-4 flex justify-center">
-                  {props.state.paginationResponse.data.previousPage !== null ? (
-                    <input
-                      className="mr-2 w-8 cursor-pointer rounded-md border-2 border-slate-300 px-1 py-2 text-center font-bold transition-all hover:bg-slate-100"
-                      type="button"
-                      value={
-                        props.state.paginationResponse.data.previousPage
-                          .pageNumber
-                      }
-                      onClick={props.behavior.clickPreviousPage}
-                    />
-                  ) : (
-                    <></>
-                  )}
-
-                  <input
-                    className="mr-2 w-8 cursor-pointer rounded-md border-2 border-blue-500 bg-blue-500 px-1 py-2 text-center font-bold text-white transition-all hover:border-blue-600 hover:bg-blue-600"
-                    type="button"
-                    value={props.state.paginationResponse.data.pageNumber}
-                  />
-
-                  {props.state.paginationResponse.data.nextPage !== null ? (
-                    <input
-                      className="mr-2 w-8 cursor-pointer rounded-md border-2 border-slate-300 px-1 py-2 text-center font-bold transition-all hover:bg-slate-100"
-                      type="button"
-                      value={
-                        props.state.paginationResponse.data.nextPage.pageNumber
-                      }
-                      onClick={props.behavior.clickNextPage}
-                    />
-                  ) : (
-                    <></>
-                  )}
+            <section className="">
+              <div
+                className={`grid grid-cols-6 gap-y-4 grid-rows-${
+                  props.state.itemsPerPage + 1
+                }`}
+              >
+                <div className="col-start-1 col-end-7 grid grid-cols-6 border-b-2 border-black">
+                  <div className="flex items-center justify-center">
+                    <p className="font-bold">Start</p>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <p className="font-bold">End</p>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <p className="font-bold">Patient</p>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <p className="font-bold">Description</p>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <p className="font-bold">Edit</p>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <p className="font-bold">Remove</p>
+                  </div>
                 </div>
+                {props.state.paginationResponse.data.page.map((item, index) => {
+                  if (index < props.state.itemsPerPage) {
+                    return (
+                      <div
+                        key={index}
+                        className="col-start-1 col-end-7 grid h-12 grid-cols-6 hover:bg-slate-200"
+                      >
+                        {" "}
+                        {[
+                          <div
+                            className="flex items-center justify-center overflow-clip whitespace-nowrap"
+                            key={index + 1}
+                          >
+                            <p>{new Date(item.start).toLocaleString()}</p>
+                          </div>,
+                          <div
+                            className="flex items-center justify-center overflow-clip whitespace-nowrap"
+                            key={index + 2}
+                          >
+                            <p className="whitespace-nowrap text-slate-800">
+                              {new Date(item.end).toLocaleString()}
+                            </p>
+                          </div>,
+                          <div
+                            className="flex items-center justify-center overflow-clip whitespace-nowrap"
+                            key={index + 3}
+                          >
+                            <p className="whitespace-nowrap text-slate-800">
+                              {item.patientName}
+                            </p>
+                          </div>,
+                          <div
+                            className="flex items-center justify-center overflow-clip whitespace-nowrap"
+                            key={index + 4}
+                          >
+                            <p>{item.description}</p>
+                          </div>,
+                          <div
+                            className="flex items-center justify-center"
+                            key={index + 5}
+                          >
+                            <span className="group flex w-20 justify-center">
+                              <Link
+                                href={`/appointment/edit?id=${item.id}`}
+                                className="flex h-10 w-20 items-center justify-center rounded-full border-2 border-emerald-500 bg-emerald-500 px-2 font-bold text-white shadow-lg transition-all group-hover:h-11 group-hover:w-11"
+                                title="Edit"
+                              >
+                                <Image
+                                  src={editIcon}
+                                  height={30}
+                                  width={30}
+                                  alt="edit icon"
+                                />
+                              </Link>
+                            </span>
+                          </div>,
+                          <div
+                            className="flex items-center justify-center"
+                            key={index + 6}
+                          >
+                            <span className="group flex w-20 justify-center">
+                              <button
+                                onClick={() => {
+                                  setModalMessage(
+                                    `Are you sure you want to remove ${item.name}?`,
+                                  );
+                                  setModalCallBack(() => console.log("hi"));
+                                  showModal();
+                                }}
+                                className="flex h-10 w-20 items-center justify-center rounded-full border-2 border-emerald-500 bg-emerald-500 px-2 font-bold text-white shadow-lg transition-all group-hover:h-11 group-hover:w-11"
+                                title="Remove"
+                              >
+                                <Image
+                                  src={removeIcon}
+                                  height={30}
+                                  width={30}
+                                  alt="remove icon"
+                                />
+                              </button>
+                            </span>
+                          </div>,
+                        ]}
+                      </div>
+                    );
+                  }
+                  return [];
+                })}
               </div>
-            </div>
+              <div className="mt-2 flex justify-center">
+                {props.state.paginationResponse.data.previousPage !== null ? (
+                  <CircleButton
+                    theme={Theme.SECONDARY}
+                    onClick={props.behavior.clickPreviousPage}
+                  >
+                    {
+                      props.state.paginationResponse.data.previousPage
+                        .pageNumber
+                    }
+                  </CircleButton>
+                ) : (
+                  <></>
+                )}
+
+                <CircleButton theme={Theme.MAIN}>
+                  {props.state.paginationResponse.data.pageNumber}
+                </CircleButton>
+
+                {props.state.paginationResponse.data.nextPage !== null ? (
+                  <CircleButton
+                    theme={Theme.SECONDARY}
+                    onClick={props.behavior.clickNextPage}
+                  >
+                    {props.state.paginationResponse.data.nextPage.pageNumber}
+                  </CircleButton>
+                ) : (
+                  <></>
+                )}
+              </div>
+            </section>
           ) : (
             <></>
           )}

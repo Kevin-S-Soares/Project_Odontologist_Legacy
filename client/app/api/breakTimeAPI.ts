@@ -25,14 +25,20 @@ export function addBreakTimeAPI(arg: BreakTime): Promise<string> {
   });
 }
 
-export function findAllBreakTimeAPI(): Promise<BreakTime[]> {
+export function findAllBreakTimeAPI(scheduleId?: number): Promise<BreakTime[]> {
   return new Promise<BreakTime[]>((success, error) => {
     const options: RequestInit = {
       headers: CookieHandler.getAuthorizedHeader(),
       method: "GET",
     };
 
-    fetch("/api/break_time", options).then((response) => {
+    let args = "";
+
+    if(scheduleId != null){
+      args += "?scheduleId=" + scheduleId;
+    }
+
+    fetch("/api/break_time" + args, options).then((response) => {
       if (response.status === 200) {
         success(response.json());
       } else {
