@@ -33,7 +33,7 @@ namespace Server.Services.EmailService
 
             smtp.Authenticate(s_user, s_password);
 
-            smtp.Send(message);
+            await smtp.SendAsync(message);
             smtp.Disconnect(true);
             
             return new(data: true, statusCode: StatusCodes.Status200OK);

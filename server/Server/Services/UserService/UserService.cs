@@ -84,7 +84,7 @@ namespace Server.Services.UserService
                     return new(errorMessage: e.Message,
                         statusCode: StatusCodes.Status500InternalServerError);
                 }
-                _ = _emailService.SendEmailAsync(new());
+                _ = _emailService.SendEmailAsync(EmailFactory.CreateEmailFromForgetPassword(query));
             }
             return new(data: "Verify your email", statusCode: StatusCodes.Status200OK);
         }
