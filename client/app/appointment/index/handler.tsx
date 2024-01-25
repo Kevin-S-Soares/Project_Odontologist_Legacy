@@ -5,10 +5,11 @@ import React, { FormEvent, ReactNode, useEffect, useState } from "react";
 import { DEFAULT_ITEMS_PER_PAGE, IBehavior, State, View } from "./view";
 import { AuthHandler } from "@/app/AuthHandler";
 import { Role } from "@/app/models/enums";
-import { findAllAppointmentAPI } from "@/app/api/appointmentAPI";
+import { findAllAppointmentAPI, removeAppointmentAPI } from "@/app/api/appointmentAPI";
 import { Response } from "@/app/models/response";
 import { IPagination, createPagination } from "@/app/models/interfaces";
 import { Appointment } from "@/app/models/appointment";
+import { setModalMessage } from "@/app/components/modal/funcs";
 
 let data: Appointment[] | null = null;
 const paginationResponse: Response<IPagination<Appointment>> = new Response();
@@ -63,6 +64,14 @@ export const Handler = (): ReactNode => {
         });
       }
     },
+    removeItem: (arg: number): void => {
+      removeAppointmentAPI(arg).then(
+        () => {
+          window.location.replace("/appointment/index");
+        },
+        (error) => setModalMessage(error.message),
+      );
+    }
   };
 
   return (

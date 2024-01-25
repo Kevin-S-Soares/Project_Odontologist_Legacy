@@ -177,7 +177,7 @@ export const View = (props: {
                                   setModalMessage(
                                     `Are you sure you want to remove ${item.description} from ${item.patientName}?`,
                                   );
-                                  setModalCallBack(() => props.behavior.removeItem);
+                                  setModalCallBack(() => props.behavior.removeItem(item.id));
                                   showModal();
                                 }}
                                 className="flex h-10 w-20 items-center justify-center rounded-full border-2 border-emerald-500 bg-emerald-500 px-2 font-bold text-white shadow-lg transition-all group-hover:h-11 group-hover:w-11"
