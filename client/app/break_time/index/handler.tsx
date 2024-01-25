@@ -8,7 +8,8 @@ import { Role } from "@/app/models/enums";
 import { Response } from "@/app/models/response";
 import { IPagination, createPagination } from "@/app/models/interfaces";
 import { BreakTime } from "@/app/models/break_time";
-import { findAllBreakTimeAPI } from "@/app/api/breakTimeAPI";
+import { findAllBreakTimeAPI, removeBreakTimeAPI } from "@/app/api/breakTimeAPI";
+import { setModalMessage } from "@/app/components/modal/funcs";
 
 let data: BreakTime[] | null = null;
 const paginationResponse: Response<IPagination<BreakTime>> = new Response();
@@ -69,6 +70,14 @@ export const Handler = (): ReactNode => {
         });
       }
     },
+    removeItem: (arg: number): void => {
+      removeBreakTimeAPI(arg).then(
+        () => {
+          window.location.replace("/break_time/index");
+        },
+        (error) => setModalMessage(error.message),
+      );
+    }
   };
 
   return (

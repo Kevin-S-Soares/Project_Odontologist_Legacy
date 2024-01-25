@@ -23,11 +23,11 @@ export const Handler = (): ReactNode => {
     setState({ ...state, authenticated: aux });
   });
 
-  useEffect(() =>{
-    setState({...state, authenticated: store.get()});
+  useEffect(() => {
+    setState({ ...state, authenticated: store.get() });
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store]);
-  
+
   const behavior: IBehavior = {
     setToggle: (): void => {
       isToggled = !isToggled;

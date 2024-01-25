@@ -2,7 +2,7 @@ import React from "react";
 import { Handler } from "./handler";
 
 const Modal = () => {
-    return <Handler />;
+  return <Handler />;
 };
 
 export default Modal;

@@ -11,7 +11,11 @@ import { CircleButton, Theme } from "@/app/components/theme";
 
 import editIcon from "../../../public/edit.svg";
 import removeIcon from "../../../public/trash2.svg";
-import { setModalCallBack, setModalMessage, showModal } from "@/app/components/modal/funcs";
+import {
+  setModalCallBack,
+  setModalMessage,
+  showModal,
+} from "@/app/components/modal/funcs";
 
 export const DEFAULT_ITEMS_PER_PAGE = 5;
 
@@ -24,6 +28,7 @@ export interface IBehavior {
   clickNextPage: () => void;
   clickPreviousPage: () => void;
   selectItemsPerPage: (event: FormEvent<HTMLSelectElement>) => void;
+  removeItem: (arg: number) => void;
 }
 
 export const View = (props: {
@@ -182,7 +187,7 @@ export const View = (props: {
                                   setModalMessage(
                                     `Are you sure you want to remove ${item.name}?`,
                                   );
-                                  setModalCallBack(() => console.log("hi"));
+                                  setModalCallBack(() => props.behavior.removeItem(item.id));
                                   showModal();
                                 }}
                                 className="flex h-10 w-20 items-center justify-center rounded-full border-2 border-emerald-500 bg-emerald-500 px-2 font-bold text-white shadow-lg transition-all group-hover:h-11 group-hover:w-11"

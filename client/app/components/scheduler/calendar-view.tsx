@@ -27,11 +27,7 @@ export const CalendarView = (props: {
             <div className="flex items-center justify-between">
               <label>Odontologist</label>
               <select
-                value={
-                  props.odontologist !== null
-                    ? props.odontologist.id
-                    : 0
-                }
+                value={props.odontologist !== null ? props.odontologist.id : 0}
                 onChange={props.behavior.selectOdontologist}
                 className="my-2 ml-2 w-32 rounded-md border-2 border-slate-300 px-2 py-3"
               >

@@ -28,6 +28,7 @@ export interface IBehavior {
   clickNextPage: () => void;
   clickPreviousPage: () => void;
   selectItemsPerPage: (event: FormEvent<HTMLSelectElement>) => void;
+  removeItem: (arg: number) => void;
 }
 
 export const View = (props: {
@@ -127,10 +128,10 @@ export const View = (props: {
                         {" "}
                         {[
                           <div
-                            className="flex items-center justify-center overflow-clip whitespace-nowrap"
+                            className="flex items-center justify-center overflow-clip text-center"
                             key={index + 1}
                           >
-                            <p>{item.name}</p>
+                            <p className=" min-w-0">{item.name}</p>
                           </div>,
                           <div
                             className="flex items-center justify-center overflow-clip whitespace-nowrap"
@@ -208,7 +209,7 @@ export const View = (props: {
                                   setModalMessage(
                                     `Are you sure you want to remove ${item.name}?`,
                                   );
-                                  setModalCallBack(() => console.log("hi"));
+                                  setModalCallBack(() => props.behavior.removeItem(item.id));
                                   showModal();
                                 }}
                                 className="flex h-10 w-20 items-center justify-center rounded-full border-2 border-emerald-500 bg-emerald-500 px-2 font-bold text-white shadow-lg transition-all group-hover:h-11 group-hover:w-11"

@@ -6,9 +6,10 @@ import { DEFAULT_ITEMS_PER_PAGE, IBehavior, State, View } from "./view";
 import { Schedule } from "@/app/models/schedule";
 import { AuthHandler } from "@/app/AuthHandler";
 import { Role } from "@/app/models/enums";
-import { findAllScheduleAPI } from "@/app/api/scheduleAPI";
+import { findAllScheduleAPI, removeScheduleAPI } from "@/app/api/scheduleAPI";
 import { Response } from "@/app/models/response";
 import { IPagination, createPagination } from "@/app/models/interfaces";
+import { setModalMessage } from "@/app/components/modal/funcs";
 
 let data: Schedule[] | null = null;
 const paginationResponse: Response<IPagination<Schedule>> = new Response();
@@ -63,6 +64,14 @@ export const Handler = (): ReactNode => {
         });
       }
     },
+    removeItem: (arg: number): void => {
+      removeScheduleAPI(arg).then(
+        () => {
+          window.location.replace("/schedule/index");
+        },
+        (error) => setModalMessage(error.message),
+      );
+    }
   };
 
   return (

@@ -34,7 +34,7 @@ export function findAllBreakTimeAPI(scheduleId?: number): Promise<BreakTime[]> {
 
     let args = "";
 
-    if(scheduleId != null){
+    if (scheduleId != null) {
       args += "?scheduleId=" + scheduleId;
     }
 

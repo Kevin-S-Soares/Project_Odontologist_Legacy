@@ -77,13 +77,12 @@ export class Time {
     let aux = this.minutes + arg;
     let increment = 0;
     let condition = true;
-    while(condition){
-      if(aux > 59){
+    while (condition) {
+      if (aux > 59) {
         increment++;
         aux -= 60;
         condition = true;
-      }
-      else{
+      } else {
         condition = false;
       }
     }
@@ -95,6 +94,10 @@ export class Time {
   }
 
   public toString(): string {
-    return String(this.hours).padStart(2, "0") + ":" + String(this.minutes).padStart(2, "0");
+    return (
+      String(this.hours).padStart(2, "0") +
+      ":" +
+      String(this.minutes).padStart(2, "0")
+    );
   }
 }

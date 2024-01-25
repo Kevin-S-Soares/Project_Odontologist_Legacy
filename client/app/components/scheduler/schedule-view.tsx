@@ -11,7 +11,6 @@ export interface IScheduleViewBehavior {
 }
 
 export const ScheduleView = (props: {
-
   startingValue: string;
   endingValue: string;
   durationInMinutes: number;
@@ -28,14 +27,14 @@ export const ScheduleView = (props: {
 }): ReactNode => {
   return (
     <div id="container" className="w-full">
-      <div className=" mb-2 flex justify-between items-center">
+      <div className=" mb-2 flex items-center justify-between">
         <label>Schedule: </label>
         <select
           value={
             props.selectedSchedule !== null ? props.selectedSchedule.id : 0
           }
           onChange={props.behavior.setSelectedSchedule}
-          className="rounded-md border-2 border-slate-300 px-2 py-3 w-48"
+          className="w-48 rounded-md border-2 border-slate-300 px-2 py-3"
         >
           {props.schedules.map((item, index) => (
             <option value={item.id} key={index}>
@@ -50,7 +49,7 @@ export const ScheduleView = (props: {
             <div className="mb-2 flex items-center justify-between">
               <label>Start:</label>
               <input
-                className="rounded-md border-2 border-slate-300 px-2 py-3 w-48"
+                className="w-48 rounded-md border-2 border-slate-300 px-2 py-3"
                 type="datetime-local"
                 min={props.minSchedule}
                 max={props.maxSchedule}
@@ -61,7 +60,7 @@ export const ScheduleView = (props: {
             <div className="mb-2 flex items-center justify-between">
               <label>End:</label>
               <input
-                className="rounded-md border-2 border-slate-300 px-2 py-3 w-48"
+                className="w-48 rounded-md border-2 border-slate-300 px-2 py-3"
                 type="datetime-local"
                 min={props.minSchedule}
                 max={props.maxSchedule}
@@ -76,7 +75,7 @@ export const ScheduleView = (props: {
                 min={1}
                 value={props.durationInMinutes}
                 onChange={props.behavior.setDurationInMinutes}
-                className="rounded-md border-2 border-slate-300 px-2 py-3 w-48"
+                className="w-48 rounded-md border-2 border-slate-300 px-2 py-3"
               />
             </div>
           </div>

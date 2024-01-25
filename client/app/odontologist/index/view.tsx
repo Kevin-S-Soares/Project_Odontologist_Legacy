@@ -10,7 +10,11 @@ import { CircleButton, Theme } from "@/app/components/theme";
 
 import editIcon from "../../../public/edit.svg";
 import removeIcon from "../../../public/trash2.svg";
-import { setModalCallBack, setModalMessage, showModal } from "@/app/components/modal/funcs";
+import {
+  setModalCallBack,
+  setModalMessage,
+  showModal,
+} from "@/app/components/modal/funcs";
 
 export const DEFAULT_ITEMS_PER_PAGE = 5;
 
@@ -23,6 +27,7 @@ export interface IBehavior {
   clickPreviousPage: () => void;
   clickNextPage: () => void;
   selectItemsPerPage: (event: FormEvent<HTMLSelectElement>) => void;
+  removeItem: (arg: number) => void;
 }
 
 export const View = (props: {
@@ -90,7 +95,7 @@ export const View = (props: {
           {props.state.paginationResponse.data.page.length > 0 ? (
             <section className="">
               <div
-                className={`gap-y-4 grid grid-cols-5 grid-rows-${
+                className={`grid grid-cols-5 gap-y-4 grid-rows-${
                   props.state.itemsPerPage + 1
                 }`}
               >
@@ -113,17 +118,40 @@ export const View = (props: {
                 </div>
                 {props.state.paginationResponse.data.page.map((item, index) => {
                   if (index < props.state.itemsPerPage) {
-                    return <div key={index} className="h-12 grid col-start-1 col-end-6 grid-cols-5 hover:bg-slate-200"> {[
-                      <div className="flex items-center justify-center overflow-clip whitespace-nowrap" key={index + 1}>
-                        <p>{item.name}</p>
-                      </div>,
-                      <div className="flex items-center justify-center overflow-clip whitespace-nowrap" key={index + 2}>
-                        <a className="whitespace-nowrap text-slate-800 underline" href={`mailto:${item.email}`}>{item.email}</a>
-                      </div>,
-                      <div className="flex items-center justify-center overflow-clip whitespace-nowrap" key={index + 3}>
-                        <p>{item.phone}</p>
-                      </div>,
-                      <div className="flex justify-center items-center" key={index + 4}>
+                    return (
+                      <div
+                        key={index}
+                        className="col-start-1 col-end-6 grid h-12 grid-cols-5 hover:bg-slate-200"
+                      >
+                        {" "}
+                        {[
+                          <div
+                            className="flex items-center justify-center overflow-clip whitespace-nowrap"
+                            key={index + 1}
+                          >
+                            <p>{item.name}</p>
+                          </div>,
+                          <div
+                            className="flex items-center justify-center overflow-clip whitespace-nowrap"
+                            key={index + 2}
+                          >
+                            <a
+                              className="whitespace-nowrap text-slate-800 underline"
+                              href={`mailto:${item.email}`}
+                            >
+                              {item.email}
+                            </a>
+                          </div>,
+                          <div
+                            className="flex items-center justify-center overflow-clip whitespace-nowrap"
+                            key={index + 3}
+                          >
+                            <p>{item.phone}</p>
+                          </div>,
+                          <div
+                            className="flex items-center justify-center"
+                            key={index + 4}
+                          >
                             <span className="group flex w-20 justify-center">
                               <Link
                                 href={`/odontologist/edit?id=${item.id}`}
@@ -138,13 +166,20 @@ export const View = (props: {
                                 />
                               </Link>
                             </span>
-                      </div>,
-                      <div className="flex justify-center items-center" key={index + 5}>
+                          </div>,
+                          <div
+                            className="flex items-center justify-center"
+                            key={index + 5}
+                          >
                             <span className="group flex w-20 justify-center">
                               <button
                                 onClick={() => {
-                                  setModalMessage(`Are you sure you want to remove ${item.name}?`);
-                                  setModalCallBack(() => console.log("hi"));
+                                  setModalMessage(
+                                    `Are you sure you want to remove ${item.name}?`,
+                                  );
+                                  setModalCallBack(() =>
+                                    props.behavior.removeItem(item.id),
+                                  );
                                   showModal();
                                 }}
                                 className="flex h-10 w-20 items-center justify-center rounded-full border-2 border-emerald-500 bg-emerald-500 px-2 font-bold text-white shadow-lg transition-all group-hover:h-11 group-hover:w-11"
@@ -158,9 +193,10 @@ export const View = (props: {
                                 />
                               </button>
                             </span>
-                      </div>,
-                    ]}
-                    </div>;
+                          </div>,
+                        ]}
+                      </div>
+                    );
                   }
                   return [];
                 })}

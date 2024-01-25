@@ -5,10 +5,14 @@ import React, { FormEvent, ReactNode, useEffect, useState } from "react";
 import { Odontologist } from "@/app/models/odontologist";
 import { DEFAULT_ITEMS_PER_PAGE, IBehavior, State, View } from "./view";
 import { AuthHandler } from "@/app/AuthHandler";
-import { findAllOdontologistAPI } from "@/app/api/odontologistAPI";
+import {
+  findAllOdontologistAPI,
+  removeOdontologistAPI,
+} from "@/app/api/odontologistAPI";
 import { IPagination, createPagination } from "@/app/models/interfaces";
 import { Role } from "@/app/models/enums";
 import { Response } from "@/app/models/response";
+import { setModalMessage } from "@/app/components/modal/funcs";
 
 let data: Odontologist[] | null = null;
 const paginationResponse: Response<IPagination<Odontologist>> = new Response();
@@ -60,6 +64,14 @@ export const Handler = (): ReactNode => {
           paginationResponse: paginationResponse,
         });
       }
+    },
+    removeItem: (arg: number): void => {
+      removeOdontologistAPI(arg).then(
+        () => {
+          window.location.replace("/odontologist/index");
+        },
+        (error) => setModalMessage(error.message),
+      );
     },
   };
 
