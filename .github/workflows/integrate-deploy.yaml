@@ -1,4 +1,4 @@
-name: integrate
+name: integrate & deploy
 
 on:
   push:
@@ -31,3 +31,26 @@ jobs:
 
       - name: Testing the server
         run: dotnet test 'server/Tests'
+  
+  release:
+    name: release
+    needs: [client, server]
+    runs-on: ubuntu-latest
+    env:
+      HOST: ${{ secrets.HOST }}
+      USER: ${{ secrets.USER }}
+      PORT: ${{ secrets.PORT }}
+      KEY: ${{ secrets.KEY }}
+    steps:
+    - name: executing remote ssh
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ env.HOST }}
+        username: ${{ env.USER }}
+        port: ${{ env.PORT }}
+        key: ${{ env.KEY }}
+        script: |
+          cd projects/Project_Odontologist
+          git pull
+          sudo docker compose build
+          sudo docker compose up -d
